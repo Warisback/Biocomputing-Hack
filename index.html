@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neuron Match</title>
+  <meta name="description" content="Play Memory against a simulated brain that stores every card it sees in its synapses." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- START SCREEN -->
+  <section id="start" class="view active">
+    <div class="phone start-phone">
+      <div class="rays"></div>
+      <div class="ghost-q">?</div>
+      <div class="logo big">
+        <span class="l1">Neuron</span>
+        <span class="l2">match</span>
+      </div>
+      <p class="tagline">Play Memory against a brain.<br />It remembers every card it sees&nbsp;— in its synapses.</p>
+
+      <div class="difficulty" role="radiogroup" aria-label="Brain difficulty">
+        <button class="pill" data-noise="0.35" role="radio">🧠 Genius</button>
+        <button class="pill selected" data-noise="0.45" role="radio">🙂 Human</button>
+        <button class="pill" data-noise="0.52" role="radio">😴 Sleepy</button>
+      </div>
+      <p class="diff-note" id="diffNote">Medium noise: a forgetful human. The best opponent.</p>
+
+      <button id="playBtn" class="play-btn">Play <span class="coin">🧠</span> 64</button>
+
+      <p class="best-label">Your wins vs the brain:</p>
+      <p class="best" id="bestScore">0</p>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="game" class="view">
+    <div class="layout">
+      <div class="phone game-phone">
+        <header class="topbar">
+          <button class="icon-btn" id="closeBtn" aria-label="Back to menu">✕</button>
+          <span class="top-title">Neuron Match</span>
+          <button class="icon-btn round" id="soundBtn" aria-label="Toggle sound">🔊</button>
+        </header>
+        <div class="logo small"><span class="l1">Neuron</span><span class="l2">match</span></div>
+        <div class="turn" id="turnLabel">Your turn</div>
+        <div class="board" id="board"></div>
+        <div class="scorebar">
+          <span>You <b id="youScore">0</b></span>
+          <i></i>
+          <span>Brain <b id="brainScore">0</b></span>
+        </div>
+      </div>
+
+      <aside class="phone brain-phone">
+        <div class="panel-head">
+          <span class="dot-live"></span>
+          <h2>Live brain</h2>
+          <span class="chip" id="noiseChip">noise 0.45 mV</span>
+        </div>
+        <p class="status" id="status">Waiting for the first flip…</p>
+
+        <div class="mea-wrap">
+          <div class="mea" id="mea"></div>
+          <div class="reward-flash" id="rewardFlash">💧 reward: save!</div>
+        </div>
+        <div class="legend">
+          <span><i class="lg face"></i>face electrode ("what")</span>
+          <span><i class="lg slot"></i>slot electrode ("where")</span>
+          <span><i class="lg spk"></i>spike</span>
+        </div>
+
+        <h3>Recall: spikes per slot</h3>
+        <div class="bars" id="bars"></div>
+
+        <h3>Memory in the synapses <small>(face → slot link, mV)</small></h3>
+        <div class="heat" id="heat"></div>
+
+        <p class="fine">Simulated 64-neuron LIF brain with STDP + reward learning, modelled on the Cortical Labs CL1 simulator. The game code never stores where cards are: the brain's memory lives only in its connection weights.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- END MODAL -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-card">
+      <div class="modal-emoji" id="modalEmoji">🏆</div>
+      <h2 id="modalTitle">You win!</h2>
+      <p id="modalText"></p>
+      <div class="modal-actions">
+        <button class="play-btn" id="againBtn">Play again</button>
+        <button class="ghost-btn" id="menuBtn">Menu</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <canvas id="confetti"></canvas>
+
+  <script src="brain.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
